@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .hover-transition-sm {
+      @apply transition-transform transform hover:scale-105 cursor-pointer;
+    }
+    .hover-transition-md {
+        @apply transition-transform transform hover:scale-110 cursor-pointer;
+    }
+    .hover-transition-lg {
+        @apply transition-transform transform hover:scale-115 cursor-pointer;
+    }
+}

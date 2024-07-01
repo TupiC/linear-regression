@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { WorkoutsComponent } from './components/workouts/workouts.component';
-import { IndexedDbService } from './services/indexed-db.service';
 import { WorkoutComponent } from './components/workout/workout.component';
 import { HeaderComponent } from './components/header/header.component';
 import { WorkoutCardComponent } from './components/workout-card/workout-card.component';
@@ -16,7 +15,7 @@ import { WorkoutCardComponent } from './components/workout-card/workout-card.com
     WorkoutsComponent,
     WorkoutComponent,
     HeaderComponent,
-    WorkoutCardComponent
+    WorkoutCardComponent,
   ],
   imports: [
     BrowserModule,

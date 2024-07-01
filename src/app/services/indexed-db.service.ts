@@ -41,7 +41,7 @@ export class IndexedDbService {
     return (await this.dbPromise).delete('workouts', id);
   }
 
-  async getWorkout(id: number) {
+  async getWorkout(id: number): Promise<any> {
     return (await this.dbPromise).get('workouts', id);
   }
 

@@ -1,4 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { ro } from 'date-fns/locale';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
 
 @Component({
@@ -7,6 +9,7 @@ import { IndexedDbService } from 'src/app/services/indexed-db.service';
 })
 export class WorkoutsComponent implements OnInit {
   workouts: Workout[] = [];
+  router = inject(Router);
 
   constructor(private indexedDbService: IndexedDbService) { }
 
@@ -14,54 +17,32 @@ export class WorkoutsComponent implements OnInit {
     this.workouts = await this.indexedDbService.getAllWorkouts();
   }
 
-  async addWorkout() {
-    const workout: Workout = {
+  addWorkout() {
+    const workout =
+    {
       id: Date.now(),
-      name: 'New Workout',
-      muscleGroup: 'Chest',
-      description: 'This is a new workout',
-      exercises: [
-        {
-          name: 'Bench Press',
-          description: 'This is a bench press',
-          sets: 4,
-          reps: 8,
-          weight: 135
-        },
-        {
-          name: 'Incline Bench Press',
-          description: 'This is an incline bench press',
-          sets: 4,
-          reps: 8,
-          weight: 135
-        }
-      ],
+      exercises: [],
       created: new Date(),
       updated: new Date()
     };
-    try {
-      await this.indexedDbService.addWorkout(workout);
-      console.log('Workout added');
-      this.workouts = await this.indexedDbService.getAllWorkouts();
-    } catch (error) {
-      console.log('Error adding workout', error);
-    }
-  }
 
+    this.indexedDbService.addWorkout(workout);
+    this.router.navigate(['/workouts', workout.id]);
+  }
 }
 export type Workout = {
   id: number;
-  name: string;
-  muscleGroup: MuscleGroup;
-  description: string;
+  name?: string;
+  muscleGroup?: MuscleGroup;
+  description?: string;
   exercises: Exercise[];
   created: Date;
   updated: Date;
 }
 
-type Exercise = {
+export type Exercise = {
   name: string;
-  description: string;
+  note: string;
   sets: number;
   reps: number;
   weight: number;
