@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'linear-regression'`, () => {
+  it(`should have as title 'tupi-goes-gym'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('linear-regression');
+    expect(app.title).toEqual('tupi-goes-gym');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('linear-regression app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('tupi-goes-gym app is running!');
   });
 });
