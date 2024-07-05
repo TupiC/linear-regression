@@ -14,20 +14,10 @@ export class ExercisesComponent {
   exerciseForm: FormGroup;
   muscleGroupForm: FormGroup;
   currentWorkout!: Workout;
-
-  muscleGroups: MuscleGroup[] = [
-    'Chest',
-    'Back',
-    'Legs',
-    'Shoulders',
-    'Biceps',
-    'Triceps',
-    'Abs',
-    'Calves',
-    'Forearms',
-    'Other'
-  ];
   exercises: Exercise[] = [];
+  muscleGroups: MuscleGroup[] = ['Chest', 'Back', 'Legs', 'Shoulders', 'Biceps', 'Triceps', 'Abs', 'Calves', 'Forearms', 'Other'].sort((a, b) => a.localeCompare(b)).map((muscleGroup) => muscleGroup as MuscleGroup);
+  filteredExercises: Exercise[] = [];
+  selectedMuscleGroup: MuscleGroup | undefined;
 
   constructor(private formBuilder: FormBuilder) {
     this.exerciseForm = this.formBuilder.group({
@@ -54,25 +44,29 @@ export class ExercisesComponent {
     });
   }
 
-  setShowAddExercise(value: boolean) {
-    this.showAddExercise = value;
+  showAddExercisePopup() {
+    this.showAddExercise = true;
   }
 
-  setShowChooseExercise(value: boolean) {
-    this.showChooseExercise = value;
+  hideAddExercisePopup() {
+    this.showAddExercise = false;
+  }
+
+  showChooseExercisePopup(muscleGroup: MuscleGroup) {
+    this.selectedMuscleGroup = muscleGroup;
+    this.filteredExercises = this.exercises.filter((exercise) => exercise.muscleGroup === this.selectedMuscleGroup);
+    console.log(this.selectedMuscleGroup, this.filteredExercises);
+
+    this.showChooseExercise = true;
   }
 
   saveExercise() {
     if (this.exerciseForm.valid) {
-      // Save the exercise logic here
-      console.log(this.exerciseForm.value);
       this.showAddExercise = false;
       this.indexedDbService.addExercise(this.exerciseForm.value);
-      this.exerciseForm.reset(); // Reset the form after saving
-      //reload
+      this.exerciseForm.reset();
       location.reload();
     } else {
-      // Handle form validation errors
       console.log('Form is invalid');
     }
   }
@@ -80,16 +74,18 @@ export class ExercisesComponent {
   addExerciseToWorkout(exercise: Exercise) {
     const exerciseWorkout: ExerciseWorkout = {
       exercise,
-      sets: 3,
-      reps: 10,
-      weight: 20,
-      startTime: new Date()
     };
+
     const workout = this.currentWorkout;
     workout.exerciseWorkouts.push(exerciseWorkout)
+    workout.name = this.formatWorkoutName();
 
     this.indexedDbService.updateWorkout(workout);
-    // Navigate back to the workout page
     window.history.back();
   }
+
+  formatWorkoutName() {
+    return this.currentWorkout.exerciseWorkouts.map((exerciseWorkout) => exerciseWorkout.exercise.muscleGroup).join(' - ');
+  }
+
 }

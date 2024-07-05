@@ -2,11 +2,7 @@
   <app-header></app-header>
 
   <ng-container *ngFor="let workout of workouts">
-    <app-workout-card
-      routerLink="/workouts/{{ workout.id }}"
-      class="w-4/5"
-      [workout]="workout"
-    ></app-workout-card>
+    <app-workout-card class="w-4/5" [workout]="workout"></app-workout-card>
   </ng-container>
 
   <div class="w-3/4 mt-8">

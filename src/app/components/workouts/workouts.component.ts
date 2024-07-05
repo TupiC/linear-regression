@@ -46,10 +46,13 @@ export type Workout = {
 
 export type ExerciseWorkout = {
   exercise: Exercise;
-  sets: number;
+  sets?: Set[];
+}
+
+export type Set = {
   reps: number;
   weight: number;
-  startTime?: Date;
+  startTime: Date;
 }
 
 export type Exercise = {
