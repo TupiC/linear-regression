@@ -19,10 +19,10 @@ export class WorkoutsComponent implements OnInit {
   }
 
   addWorkout() {
-    const workout =
+    const workout: Workout =
     {
       id: Date.now(),
-      exercises: [],
+      exerciseWorkouts: [],
       created: new Date(),
       updated: new Date()
     };
@@ -30,24 +30,33 @@ export class WorkoutsComponent implements OnInit {
     this.indexedDbService.addWorkout(workout);
     this.router.navigate(['/workouts', workout.id]);
   }
+
+  clearDb() {
+    indexedDB.deleteDatabase('workouts-db');
+    location.reload();
+  }
 }
 export type Workout = {
   id: number;
   name?: string;
-  muscleGroup?: MuscleGroup;
-  description?: string;
-  exercises: Exercise[];
+  exerciseWorkouts: ExerciseWorkout[];
   created: Date;
   updated: Date;
 }
 
-export type Exercise = {
-  name: string;
-  note: string;
+export type ExerciseWorkout = {
+  exercise: Exercise;
   sets: number;
   reps: number;
   weight: number;
   startTime?: Date;
+}
+
+export type Exercise = {
+  name: string;
+  muscleGroup?: MuscleGroup;
+  note: string;
+  created: Date;
 }
 
 export type MuscleGroup = 'Chest' | 'Back' | 'Legs' | 'Shoulders' | 'Biceps' | 'Triceps' | 'Abs' | 'Calves' | 'Forearms' | 'Other';

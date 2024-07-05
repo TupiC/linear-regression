@@ -2,13 +2,13 @@
   <app-header></app-header>
 
   <p class="text-white text-2xl font-bold mt-4">{{ formattedWorkoutDate }}</p>
-  <ng-container *ngFor="let exercise of exercises">
+  <ng-container *ngFor="let exercise of exerciseWorkouts">
     <div class="flex w-full items-center">
       <div
         class="flex flex-col justify-center items-center bg-dark-red p-4 text-white rounded"
       >
-        <p>{{ exercise.name }}</p>
-        <p>{{ exercise.note }}</p>
+        <!-- <p>{{ exercise.name }}</p> -->
+        <!-- <p>{{ exercise.note }}</p> -->
       </div>
       <div class="h-11/12 bg-white p-2 flex-grow rounded-r">
         <h2 class="text-xl font-bold">{{ exercise.sets }}</h2>

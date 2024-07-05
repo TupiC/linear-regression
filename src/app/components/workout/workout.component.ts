@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Exercise, Workout } from '../workouts/workouts.component';
+import { Exercise, ExerciseWorkout, Workout } from '../workouts/workouts.component';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
@@ -11,7 +11,7 @@ import { de } from 'date-fns/locale/de';
 })
 export class WorkoutComponent implements OnInit {
   workout!: Workout;
-  exercises!: Exercise[];
+  exerciseWorkouts!: ExerciseWorkout[];
   indexedDbService = inject(IndexedDbService);
   router = inject(Router);
   workoutId: number | undefined;
@@ -24,7 +24,7 @@ export class WorkoutComponent implements OnInit {
     }
     this.workoutId = parseInt(url.split('/').pop()!);
     this.workout = await this.indexedDbService.getWorkout(this.workoutId!);
-    this.exercises = this.workout.exercises;
+    this.exerciseWorkouts = this.workout.exerciseWorkouts;
     this.formattedWorkoutDate = format(this.workout.created, 'd. MMMM yyyy', { locale: de });
   }
 

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Exercise, MuscleGroup } from '../workouts/workouts.component';
+import { Exercise, ExerciseWorkout, MuscleGroup, Workout } from '../workouts/workouts.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
 
@@ -13,6 +13,7 @@ export class ExercisesComponent {
   showChooseExercise = false;
   exerciseForm: FormGroup;
   muscleGroupForm: FormGroup;
+  currentWorkout!: Workout;
 
   muscleGroups: MuscleGroup[] = [
     'Chest',
@@ -33,6 +34,7 @@ export class ExercisesComponent {
       name: ['', Validators.required],
       muscleGroup: ['', Validators.required],
       note: [''],
+      created: [new Date()]
     });
 
     this.muscleGroupForm = this.formBuilder.group({
@@ -43,6 +45,12 @@ export class ExercisesComponent {
   ngOnInit() {
     this.indexedDbService.getAllExercises().then((exercises) => {
       this.exercises = exercises;
+    });
+
+    // http://localhost:4200/workouts/1720169560242/exercises
+    const workoutId = window.location.pathname.split('/')[2];
+    this.indexedDbService.getWorkout(parseInt(workoutId)).then((workout) => {
+      this.currentWorkout = workout;
     });
   }
 
@@ -61,6 +69,8 @@ export class ExercisesComponent {
       this.showAddExercise = false;
       this.indexedDbService.addExercise(this.exerciseForm.value);
       this.exerciseForm.reset(); // Reset the form after saving
+      //reload
+      location.reload();
     } else {
       // Handle form validation errors
       console.log('Form is invalid');
@@ -68,13 +78,18 @@ export class ExercisesComponent {
   }
 
   addExerciseToWorkout(exercise: Exercise) {
-    const workout = {
-      id: Date.now(),
-      exercises: [exercise],
-      created: new Date(),
-      updated: new Date()
+    const exerciseWorkout: ExerciseWorkout = {
+      exercise,
+      sets: 3,
+      reps: 10,
+      weight: 20,
+      startTime: new Date()
     };
+    const workout = this.currentWorkout;
+    workout.exerciseWorkouts.push(exerciseWorkout)
 
-    this.indexedDbService.updateWorkout(exercise);
+    this.indexedDbService.updateWorkout(workout);
+    // Navigate back to the workout page
+    window.history.back();
   }
 }

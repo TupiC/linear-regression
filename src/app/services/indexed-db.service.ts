@@ -46,7 +46,7 @@ export class IndexedDbService {
 
   async deleteEmptyWorkouts() {
     const workouts = await this.getAllWorkouts();
-    const emptyWorkouts = workouts.filter((workout: any) => workout.exercises.length === 0);
+    const emptyWorkouts = workouts.filter((workout: Workout) => workout.exerciseWorkouts.length === 0);
     emptyWorkouts.forEach((workout: any) => this.deleteWorkout(workout.id));
   }
 
@@ -54,7 +54,7 @@ export class IndexedDbService {
     return (await this.dbPromise).get('workouts', id);
   }
 
-  async updateWorkout(workout: any) {
+  async updateWorkout(workout: Workout) {
     return (await this.dbPromise).put('workouts', workout);
   }
 
