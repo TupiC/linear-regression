@@ -1,0 +1,124 @@
+<div class="h-[100vh] w-[100vw] flex flex-col items-center bg-dark gap-4">
+  <app-header></app-header>
+
+  <ng-container *ngFor="let muscleGroup of muscleGroups">
+    <div
+      class="bg-light-dark text-white w-4/5 text-center rounded border-black p-2 hover-transition-sm"
+      (click)="setShowChooseExercise(true)"
+    >
+      {{ muscleGroup }}
+    </div>
+  </ng-container>
+
+  <div class="w-3/4 mt-8">
+    <button
+      class="bg-light-red hover:bg-dark-red self-center text-white w-full block text-center font-bold py-2 px-4 rounded"
+      (click)="setShowAddExercise(true)"
+    >
+      Neue Übung anlegen
+    </button>
+  </div>
+</div>
+
+<!-- add exercise popup -->
+<div
+  *ngIf="showAddExercise"
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+>
+  <div class="bg-white w-3/4 p-4 rounded flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">Neue Übung anlegen</h2>
+    <form
+      [formGroup]="exerciseForm"
+      class="flex flex-col gap-4"
+      (ngSubmit)="saveExercise()"
+    >
+      <input
+        type="text"
+        class="border border-black p-2 rounded"
+        placeholder="Name"
+        formControlName="name"
+      />
+      <select
+        class="border border-black p-2 rounded"
+        formControlName="muscleGroup"
+      >
+        <option value="" disabled selected hidden>Muskelgruppe</option>
+        <option *ngFor="let group of muscleGroups" [value]="group">
+          {{ group }}
+        </option>
+      </select>
+      <input
+        type="text"
+        class="border border-black p-2 rounded"
+        placeholder="Notiz"
+        formControlName="note"
+      />
+      <button
+        type="submit"
+        class="bg-light-red hover:bg-dark-red text-white font-bold py-2 px-4 rounded"
+      >
+        Speichern
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- choose existing exercises by muscle group, popup should appear with all exercises for a specific musclegroup. when i click on one-->
+<!-- it should be added to the workout. -->
+
+<div
+  *ngIf="showChooseExercise"
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+>
+  <div class="bg-white w-3/4 p-4 rounded flex flex-col gap-4">
+    <div
+      class="h-8 w-8 flex self-end bg-white rounded-bl-md hover-transition-sm cursor-pointer"
+      (click)="setShowChooseExercise(false)"
+    >
+      <svg
+        class="h-8 w-8 text-dark"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" />
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </div>
+    <h2 class="text-2xl font-bold">Übung hinzufügen</h2>
+    <form [formGroup]="muscleGroupForm">
+      <select
+        class="border border-black p-2 rounded"
+        formControlName="muscleGroup"
+      >
+        <option value="" disabled selected hidden>Muskelgruppe</option>
+        <option *ngFor="let group of muscleGroups" [value]="group">
+          {{ group }}
+        </option>
+      </select>
+    </form>
+    <ng-container *ngFor="let exercise of exercises">
+      <div
+        class="flex w-full items-center hover-transition-sm"
+        (click)="addExerciseToWorkout(exercise)"
+      >
+        <div
+          class="flex flex-col justify-center items-center bg-dark-red p-4 text-white rounded"
+        >
+          <p>{{ exercise.name }}</p>
+          <p>{{ exercise.note }}</p>
+        </div>
+        <div class="h-11/12 bg-white p-2 flex-grow rounded-r">
+          <h2 class="text-xl font-bold">{{ exercise.sets }}</h2>
+          <p class="text-gray-600">{{ exercise.reps }}</p>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

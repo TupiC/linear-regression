@@ -14,6 +14,7 @@ export class WorkoutsComponent implements OnInit {
   constructor(private indexedDbService: IndexedDbService) { }
 
   async ngOnInit() {
+    await this.indexedDbService.deleteEmptyWorkouts();
     this.workouts = await this.indexedDbService.getAllWorkouts();
   }
 
@@ -49,4 +50,4 @@ export type Exercise = {
   startTime?: Date;
 }
 
-type MuscleGroup = 'Chest' | 'Back' | 'Legs' | 'Shoulders' | 'Arms' | 'Core';
+export type MuscleGroup = 'Chest' | 'Back' | 'Legs' | 'Shoulders' | 'Biceps' | 'Triceps' | 'Abs' | 'Calves' | 'Forearms' | 'Other';

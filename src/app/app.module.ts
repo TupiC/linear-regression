@@ -8,6 +8,8 @@ import { WorkoutsComponent } from './components/workouts/workouts.component';
 import { WorkoutComponent } from './components/workout/workout.component';
 import { HeaderComponent } from './components/header/header.component';
 import { WorkoutCardComponent } from './components/workout-card/workout-card.component';
+import { ExercisesComponent } from './components/exercises/exercises.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { WorkoutCardComponent } from './components/workout-card/workout-card.com
     WorkoutComponent,
     HeaderComponent,
     WorkoutCardComponent,
+    ExercisesComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,9 @@ import { WorkoutCardComponent } from './components/workout-card/workout-card.com
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
